@@ -1,29 +1,20 @@
-let codes = document.querySelectorAll(".code")
-// change, input
-codes.forEach((code,index)=>{
-    
-    code.addEventListener("input",()=>{
-        if(code.value.length == 1){
-             if(index < codes.length-1){
-                   codes[index+1].focus()
-                   codes[index+1].classList.add("focused")
-             }
+const codes = document.querySelectorAll(".code");
+codes.forEach((code, idx) => {
+  code.addEventListener("keydown", (event) => {
+    event.preventDefault();
+    if (event.key >= "0" && event.key <= "9") {
+      codes[idx].value = event.key;
+      setTimeout(() => {
+        codes[idx + 1] && codes[idx + 1].focus();
+      }, 10);
+    } else if (event.key === "Backspace") {
+      codes[idx].value = "";
+      setTimeout(() => {
+        if (codes[idx - 1]) {
+          codes[idx - 1].focus();
+          codes[idx - 1].value = "";
         }
-    })
-    // keyup, keydown(press)
-    code.addEventListener("keydown",(e)=>{
-        if(e.key == "Backspace"){
-              if(index > 0 && code.value.length == 0){
-                
-                codes[index-1].focus()
-                codes[index-1].classList.add("focused")
-              }
-        }
-    })
-
-    code.addEventListener("blur", ()=>{
-		          code.classList.remove("focused")
-    })
-
-})
-
+      }, 10);
+    }
+  });
+});
